@@ -8,7 +8,6 @@ CREATE TABLE customers (
 customer_id BIGINT AUTO_INCREMENT,
 last_name VARCHAR(50),
 first_name VARCHAR(50),
-middle_name VARCHAR(50),
 birthday DATE,
 contact_number VARCHAR(11),
 address VARCHAR(256),
@@ -20,9 +19,9 @@ CREATE TABLE employees (
 employee_id BIGINT AUTO_INCREMENT,
 last_name VARCHAR(50),
 first_name VARCHAR(50),
-middle_name VARCHAR(50),
 birthday DATE,
 contact_number VARCHAR(11),
+address VARCHAR(256),
 PRIMARY KEY (employee_id)
 );
 
@@ -57,7 +56,7 @@ CREATE TABLE transactions (
     transaction_id BIGINT AUTO_INCREMENT,
     customer_id BIGINT,
     cashier_employee_id BIGINT,
-    time_processed TIMESTAMP,
+    time_processed TIMESTAMP(6),
     is_return BOOL,
     PRIMARY KEY (transaction_id),
     FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
