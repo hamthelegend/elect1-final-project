@@ -62,12 +62,12 @@ CREATE TABLE copies (
 
 CREATE TABLE transactions (
     transaction_id BIGINT AUTO_INCREMENT,
-    purchaser_customer_id BIGINT,
+    customer_id BIGINT,
     cashier_employee_id BIGINT,
     time_processed TIMESTAMP,
     is_return BOOL,
     PRIMARY KEY (transaction_id),
-    FOREIGN KEY (purchaser_customer_id) REFERENCES customers(customer_id),
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
     FOREIGN KEY (cashier_employee_id) REFERENCES employees(employee_id)
 );
 
