@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS customers;
 
 
 CREATE TABLE customers (
-customer_id BIGINT,
+customer_id BIGINT AUTO_INCREMENT,
 last_name VARCHAR(50),
 first_name VARCHAR(50),
 middle_name VARCHAR(50),
@@ -23,7 +23,7 @@ PRIMARY KEY (customer_id)
 
 
 CREATE TABLE employees (
-employee_id BIGINT,
+employee_id BIGINT AUTO_INCREMENT,
 last_name VARCHAR(50),
 first_name VARCHAR(50),
 middle_name VARCHAR(50),
@@ -33,14 +33,14 @@ PRIMARY KEY (employee_id)
 );
 
 CREATE TABLE genres (
-genre_id BIGINT,
+genre_id BIGINT AUTO_INCREMENT,
 tag VARCHAR(50),
 aisle_number INT,
 PRIMARY KEY (genre_id)
 );
 
 CREATE TABLE movies (
-    movie_id BIGINT,
+    movie_id BIGINT AUTO_INCREMENT,
     genre_id BIGINT,
     title VARCHAR(50),
     release_date DATE,
@@ -50,7 +50,7 @@ CREATE TABLE movies (
 );
 
 CREATE TABLE copies (
-    copy_id BIGINT,
+    copy_id BIGINT AUTO_INCREMENT,
     movie_id BIGINT,
     medium_format VARCHAR(10),
     cost DEC(65,2),
@@ -60,7 +60,7 @@ CREATE TABLE copies (
 );
 
 CREATE TABLE transactions (
-    transaction_id BIGINT,
+    transaction_id BIGINT AUTO_INCREMENT,
     purchaser_customer_id BIGINT,
     cashier_employee_id BIGINT,
     time_processed TIMESTAMP,
@@ -71,7 +71,7 @@ CREATE TABLE transactions (
 );
 
 CREATE TABLE transaction_contents (
-    transaction_content_id BIGINT,
+    transaction_content_id BIGINT AUTO_INCREMENT,
     transaction_id BIGINT,
     copy_id BIGINT,
     PRIMARY KEY (transaction_content_id),
