@@ -1,15 +1,8 @@
-CREATE DATABASE IF NOT EXISTS video_town;
+DROP DATABASE video_town;
+
+CREATE DATABASE video_town;
 
 USE video_town;
-
-DROP TABLE IF EXISTS transaction_contents;
-DROP TABLE IF EXISTS transactions;
-DROP TABLE IF EXISTS copies;
-DROP TABLE IF EXISTS movies;
-DROP TABLE IF EXISTS genres;
-DROP TABLE IF EXISTS employees;
-DROP TABLE IF EXISTS customers;
-
 
 CREATE TABLE customers (
 customer_id BIGINT AUTO_INCREMENT,
