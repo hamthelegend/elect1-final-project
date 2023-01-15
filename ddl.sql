@@ -31,7 +31,8 @@ DROP TABLE IF EXISTS genres;
 CREATE TABLE genres (
      genre_id BIGINT,
      tag VARCHAR(50),
-     aisle_number INT
+     aisle_number INT,
+     PRIMARY KEY (genre_id)
 );
 
 DROP TABLE IF EXISTS movies;
