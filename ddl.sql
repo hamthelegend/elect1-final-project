@@ -18,6 +18,7 @@ first_name VARCHAR(50),
 middle_name VARCHAR(50),
 birthday DATE,
 contact_number VARCHAR(11),
+address VARCHAR(256),
 PRIMARY KEY (customer_id)
 );
 
