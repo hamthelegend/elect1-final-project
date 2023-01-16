@@ -1,21 +1,12 @@
 USE video_town;
 
-CALL customers;
+CALL start_seed_transaction(
+        1,
+        1,
+        NOW(6),
+        FALSE
+    );
 
-CALL customer(7);
+CALL add_seed_item(1);
 
-CALL employees;
-
-CALL employee(5);
-
-CALL genres();
-
-CALL genre(4);
-
-CALL movies;
-
-CALL movie(4);
-
-CALL copies(1);
-
-CALL copy(5);
+CALL end_transaction;
