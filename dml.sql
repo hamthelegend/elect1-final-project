@@ -1,6 +1,6 @@
 USE video_town;
 
-CALL new_genre('Crazy', 1);
+CALL new_genre('Action', 1);
 CALL new_genre('Horror', 2);
 CALL new_genre('Romance', 3);
 CALL new_genre('Sci-fi', 4);
