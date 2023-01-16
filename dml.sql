@@ -386,7 +386,7 @@ CALL add_copies(
 CALL new_customer(
         'Manalansan',
         'Justine',
-        CURDATE(),
+        '2002-03-02',
         '09999999999',
         'Here'
     );
@@ -394,7 +394,7 @@ CALL new_customer(
 CALL new_customer(
         'Reese',
         'Gary',
-        CURDATE(),
+        '2002-06-26',
         '0945546453',
         'Somewhere'
     );
@@ -402,7 +402,7 @@ CALL new_customer(
 CALL new_customer(
         'Rusell',
         'Jason',
-        CURDATE(),
+        '2001-05-10',
         '09892348432',
         'Elsewhere'
     );
@@ -410,7 +410,7 @@ CALL new_customer(
 CALL new_customer(
         'Mitchell',
         'Tina',
-        CURDATE(),
+        '1999-09-20',
         '0923422341',
         'Somewhere'
     );
@@ -418,7 +418,7 @@ CALL new_customer(
 CALL new_customer(
         'Brenan',
         'Carolynn',
-        CURDATE(),
+        '1998-10-12',
         '0945893242321',
         'Somewhere'
     );
@@ -426,7 +426,7 @@ CALL new_customer(
 CALL new_customer(
         'Davis',
         'Theressa',
-        CURDATE(),
+        '2001-10-12',
         '092353241423',
         'Elsewhere'
     );
@@ -434,7 +434,7 @@ CALL new_customer(
 CALL new_customer(
         'Turner',
         'George',
-        CURDATE(),
+        '1997-12-12',
         '092343242523',
         'Elsewhere'
     );
@@ -443,7 +443,7 @@ CALL new_customer(
 CALL hire(
     'David',
     'Jonel',
-    CURDATE(),
+    '2002-06-10',
     '09888888888',
     'There'
     );
@@ -451,7 +451,7 @@ CALL hire(
 CALL hire(
     'Hill',
     'Kelly',
-    CURDATE(),
+    '2001-07-07',
     '0985646547',
     'Elsewhere'
     );
@@ -459,7 +459,7 @@ CALL hire(
 CALL hire(
     'Villegas',
     'Luis',
-    CURDATE(),
+    '2000-01-01',
     '09263233823',
     'Anywhere'
     );
@@ -467,7 +467,7 @@ CALL hire(
 CALL hire(
     'Watson',
     'Craig',
-    CURDATE(),
+    '2000-07-09',
     '03242341234',
     'Elsewhere'
     );
@@ -475,7 +475,7 @@ CALL hire(
 CALL hire(
     'Shannon',
     'Diana',
-    CURDATE(),
+    '2003-02-03',
     '023423423123',
     'Elsewhere'
     );
@@ -483,7 +483,7 @@ CALL hire(
 CALL hire(
     'Hoffman',
     'Andrei',
-    CURDATE(),
+    '2002-09-08',
     '07214829348',
     'Nowhere'
     );
@@ -491,7 +491,7 @@ CALL hire(
 CALL hire(
     'Carol',
     'Jesica',
-    CURDATE(),
+    '2001-01-02',
     '023423454352',
     'Nowhere'
     );
