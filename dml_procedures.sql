@@ -466,3 +466,100 @@ BEGIN
         SELECT 'You currently have no open transactions.';
     END IF;
 END;
+
+CREATE PROCEDURE start_seed_transaction(
+    _customer_id BIGINT,
+    _cashier_employee_id BIGINT,
+    _time_processed TIMESTAMP,
+    _is_return BOOL
+)
+BEGIN
+    DECLARE is_last_transaction_done BOOL DEFAULT TRUE;
+
+    SELECT is_closed
+    FROM transactions
+    ORDER BY time_processed DESC
+    LIMIT 1
+    INTO is_last_transaction_done;
+
+    IF is_last_transaction_done THEN
+        INSERT INTO transactions(customer_id, cashier_employee_id, time_processed, is_return, is_closed)
+        VALUES (_customer_id, _cashier_employee_id, _time_processed, _is_return, FALSE);
+
+        SELECT *
+        FROM transactions
+        ORDER BY transaction_id DESC
+        LIMIT 1;
+    ELSE
+        SELECT 'You have to close your previous transaction first.';
+    END IF;
+END;
+
+CREATE PROCEDURE add_seed_item(
+    _copy_id BIGINT
+)
+BEGIN
+    DECLARE is_last_transaction_done BOOL DEFAULT FALSE;
+    DECLARE _transaction_id BIGINT;
+
+    DROP TEMPORARY TABLE IF EXISTS last_transaction;
+
+    CREATE TEMPORARY TABLE last_transaction
+    AS (SELECT transaction_id, is_closed
+        FROM transactions
+        ORDER BY transaction_id DESC
+        LIMIT 1);
+
+    SELECT is_closed FROM last_transaction INTO is_last_transaction_done;
+    SELECT transaction_id FROM last_transaction INTO _transaction_id;
+
+    IF NOT is_last_transaction_done THEN
+        IF NOT is_copy_borrowed(_copy_id) THEN
+            INSERT INTO transaction_contents (transaction_id, copy_id)
+            VALUES (_transaction_id, _copy_id);
+
+            SELECT *
+            FROM transaction_contents
+            WHERE transaction_id = _transaction_id
+              AND copy_id = _copy_id
+            ORDER BY transaction_content_id DESC
+            LIMIT 1;
+        ELSE
+            SELECT 'This copy was already borrowed by someone else.';
+        END IF;
+    ELSE
+        SELECT 'You currently have no open transactions.';
+    END IF;
+END;
+
+CREATE PROCEDURE end_seed_transaction()
+BEGIN
+    DECLARE is_last_transaction_done BOOL DEFAULT TRUE;
+    DECLARE _transaction_id BIGINT;
+
+    DROP TEMPORARY TABLE IF EXISTS last_transaction;
+
+    CREATE TEMPORARY TABLE last_transaction
+    AS (SELECT transaction_id, is_closed
+        FROM transactions
+        ORDER BY transaction_id DESC
+        LIMIT 1);
+
+    SELECT is_closed FROM last_transaction INTO is_last_transaction_done;
+    SELECT transaction_id FROM last_transaction INTO _transaction_id;
+
+    DROP TEMPORARY TABLE last_transaction;
+
+    IF NOT is_last_transaction_done THEN
+        UPDATE transactions
+        SET is_closed = TRUE
+        WHERE transaction_id = _transaction_id;
+
+        SELECT *
+        FROM transactions
+        ORDER BY transaction_id DESC
+        LIMIT 1;
+    ELSE
+        SELECT 'You currently have no open transactions.';
+    END IF;
+END;

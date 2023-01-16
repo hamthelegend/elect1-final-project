@@ -33,18 +33,22 @@ CALL hire(
     'There'
     );
 
-CALL start_transaction(
+CALL start_seed_transaction(
     1,
     1,
+    '2022-01-16 16:46:32.128455',
     FALSE
     );
-CALL add_item(1);
-CALL end_transaction();
+CALL add_seed_item(2);
+CALL add_seed_item(3);
+CALL add_seed_item(4);
+CALL end_seed_transaction();
 
-CALL start_transaction(
+CALL start_seed_transaction(
     1,
     1,
-    TRUE
+    '2022-01-18 16:46:32.128455',
+    FALSE
     );
-CALL add_item(2);
-CALL end_transaction();
+CALL add_seed_item(1);
+CALL end_seed_transaction();
