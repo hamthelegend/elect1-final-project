@@ -1,6 +1,6 @@
 USE video_town;
 
-CALL new_genre('Crazy', 1);
+CALL new_genre('Action', 1);
 CALL new_genre('Horror', 2);
 CALL new_genre('Romance', 3);
 CALL new_genre('Sci-fi', 4);
@@ -395,7 +395,7 @@ CALL new_customer(
         'Reese',
         'Gary',
         '2002-06-26',
-        '0945546453',
+        '09455464530',
         'Somewhere'
     );
     
@@ -411,7 +411,7 @@ CALL new_customer(
         'Mitchell',
         'Tina',
         '1999-09-20',
-        '0923422341',
+        '09234228341',
         'Somewhere'
     );
 
@@ -419,7 +419,7 @@ CALL new_customer(
         'Brenan',
         'Carolynn',
         '1998-10-12',
-        '0945893242321',
+        '09458932423',
         'Somewhere'
     );
 
@@ -427,7 +427,7 @@ CALL new_customer(
         'Davis',
         'Theressa',
         '2001-10-12',
-        '092353241423',
+        '09235324143',
         'Elsewhere'
     );
     
@@ -435,7 +435,7 @@ CALL new_customer(
         'Turner',
         'George',
         '1997-12-12',
-        '092343242523',
+        '09234324252',
         'Elsewhere'
     );
     
@@ -452,7 +452,7 @@ CALL hire(
     'Hill',
     'Kelly',
     '2001-07-07',
-    '0985646547',
+    '09858646547',
     'Elsewhere'
     );
     
@@ -468,7 +468,7 @@ CALL hire(
     'Watson',
     'Craig',
     '2000-07-09',
-    '03242341234',
+    '09324234234',
     'Elsewhere'
     );
     
@@ -476,7 +476,7 @@ CALL hire(
     'Shannon',
     'Diana',
     '2003-02-03',
-    '023423423123',
+    '09423423123',
     'Elsewhere'
     );
     
@@ -484,7 +484,7 @@ CALL hire(
     'Hoffman',
     'Andrei',
     '2002-09-08',
-    '07214829348',
+    '09214829348',
     'Nowhere'
     );
     
@@ -492,26 +492,7 @@ CALL hire(
     'Carol',
     'Jesica',
     '2001-01-02',
-    '023423454352',
+    '09342454352',
     'Nowhere'
     );
-    
- 
- 
- CALL start_transaction(
-    1,
-    1,
-    FALSE
-    );
-CALL add_item(1);
-CALL end_transaction();
-
-CALL start_transaction(
-    1,
-    1,
-    TRUE
-    );
-CALL add_item(2);
-CALL end_transaction();
-
 
