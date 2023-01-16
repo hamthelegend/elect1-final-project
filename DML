@@ -93,7 +93,7 @@ CALL new_movie(
         3,
         'Me Before You',
         '2016-06-03',
-        'Bum-shik Jung'
+        'Thea Sharrock'
     );
 
 CALL add_copies(
@@ -122,5 +122,144 @@ CALL hire(
     
  --
  
- 
+ CALL new_genre('Sci-fi', 4);
 
+CALL new_movie(
+        4,
+        'Morbius',
+        '2022-04-01',
+        'Daniel Espinosa'
+    );
+
+CALL add_copies(
+        4,
+        'Blu-Ray',
+        66.6,
+        10,
+        ''
+    );
+
+CALL new_customer(
+        'Mitchell',
+        'Tina',
+        CURDATE(),
+        '0923422341',
+        'Somewhere'
+    );
+
+CALL hire(
+    'Watson',
+    'Craig',
+    CURDATE(),
+    '03242341234',
+    'Elsewhere'
+    );
+    
+  --
+  
+  CALL new_genre('Fantasy', 5);
+
+CALL new_movie(
+        5,
+        'Troll',
+        '2022-12-01',
+        'Roar Uthaug'
+    );
+
+CALL add_copies(
+        5,
+        'DVD',
+        50.55,
+        10,
+        ''
+    );
+
+CALL new_customer(
+        'Brenan',
+        'Carolynn',
+        CURDATE(),
+        '0945893242321',
+        'Somewhere'
+    );
+
+CALL hire(
+    'Shannon',
+    'Diana',
+    CURDATE(),
+    '023423423123',
+    'Elsewhere'
+    );
+
+--
+
+
+  CALL new_genre('Comedy', 6);
+
+CALL new_movie(
+        6,
+        'Bros',
+        '2022-09-30',
+        'Nicholas Stoller'
+    );
+
+CALL add_copies(
+        6,
+        'DVD',
+        50.55,
+        10,
+        ''
+    );
+
+CALL new_customer(
+        'Davis',
+        'Theressa',
+        CURDATE(),
+        '092353241423',
+        'Elsewhere'
+    );
+
+CALL hire(
+    'Hoffman',
+    'Andrei',
+    CURDATE(),
+    '07214829348',
+    'Nowhere'
+    );
+    
+
+ 
+ ---
+
+CALL new_movie(
+        2,
+        'Smile',
+        '2022-09-30',
+        'Parker Finn'
+    );
+
+CALL add_copies(
+        7,
+        'DVD',
+        30.55,
+        20,
+        ''
+    );
+
+CALL new_customer(
+        'Turner',
+        'George',
+        CURDATE(),
+        '092343242523',
+        'Elsewhere'
+    );
+
+CALL hire(
+    'Carol',
+    'Jesica',
+    CURDATE(),
+    '023423454352',
+    'Nowhere'
+    );
+    
+  ---
+ 
