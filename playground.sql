@@ -1,30 +1,50 @@
 USE video_town;
 
-INSERT INTO genres(tag, aisle_number)
-VALUES ('Crazy', 1);
+CALL new_genre('Crazy', 1);
 
-INSERT INTO movies(genre_id, title, release_date, director)
-VALUES (1, 'Moon Knight', CURDATE(), 'Hamuel Agulto');
+CALL new_movie(
+        1,
+        'Moon Knight: The Movie',
+        '2021-01-10',
+        'hamthelegend'
+    );
 
-INSERT INTO copies(movie_id, medium_format, cost, remarks)
-VALUES (1, 'DVD', 999, '');
+CALL add_copies(
+        1,
+        'DVD',
+        99.99,
+        5,
+        ''
+    );
 
-INSERT INTO customers(last_name, first_name, birthday, contact_number, address)
-VALUES ('Justine', 'Manalansan', CURDATE(), 09999999999, 'Here');
+CALL new_customer(
+        'Manalansan',
+        'Justine',
+        CURDATE(),
+        '09999999999',
+        'Here'
+    );
 
-INSERT INTO employees(last_name, first_name, birthday, contact_number, address)
-VALUES ('Jonel', 'David', CURDATE(), 09888888888, 'There');
+CALL hire(
+    'David',
+    'Jonel',
+    CURDATE(),
+    '09888888888',
+    'There'
+    );
 
-INSERT INTO transactions(customer_id, cashier_employee_id, time_processed, is_return)
-VALUES (1, 1, NOW(6), FALSE);
+CALL start_transaction(
+    1,
+    1,
+    FALSE
+    );
+CALL add_item(1);
+CALL end_transaction();
 
-INSERT INTO transaction_contents(transaction_id, copy_id)
-VALUES (1, 1);
-
-INSERT INTO transactions(customer_id, cashier_employee_id, time_processed, is_return)
-VALUES (1, 1, NOW(6), TRUE);
-
-INSERT INTO transaction_contents(transaction_id, copy_id)
-VALUES (2, 1);
-
-SELECT is_copy_borrowed(1);
+CALL start_transaction(
+    1,
+    1,
+    TRUE
+    );
+CALL add_item(2);
+CALL end_transaction();
