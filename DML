@@ -1,0 +1,126 @@
+USE video_town;
+
+CALL new_genre('Crazy', 1);
+
+CALL new_movie(
+        1,
+        'Moon Knight: The Movie',
+        '2021-01-10',
+        'hamthelegend'
+    );
+
+CALL add_copies(
+        1,
+        'DVD',
+        99.99,
+        5,
+        ''
+    );
+
+CALL new_customer(
+        'Manalansan',
+        'Justine',
+        CURDATE(),
+        '09999999999',
+        'Here'
+    );
+
+CALL hire(
+    'David',
+    'Jonel',
+    CURDATE(),
+    '09888888888',
+    'There'
+    );
+
+CALL start_transaction(
+    1,
+    1,
+    FALSE
+    );
+CALL add_item(1);
+CALL end_transaction();
+
+CALL start_transaction(
+    1,
+    1,
+    TRUE
+    );
+CALL add_item(2);
+CALL end_transaction();
+
+--
+
+CALL new_genre('Horror', 2);
+
+CALL new_movie(
+        2,
+        'Gonjiam: Haunted Asylum',
+        '2018-05-02',
+        'Bum-shik Jung'
+    );
+
+CALL add_copies(
+        2,
+        'DVD',
+        50.55,
+        5,
+        ''
+    );
+
+CALL new_customer(
+        'Reese',
+        'Gary',
+        CURDATE(),
+        '0945546453',
+        'Somewhere'
+    );
+
+CALL hire(
+    'Hill',
+    'Kelly',
+    CURDATE(),
+    '0985646547',
+    'Elsewhere'
+    );
+
+
+--
+
+CALL new_genre('Romance', 3);
+
+CALL new_movie(
+        3,
+        'Me Before You',
+        '2016-06-03',
+        'Bum-shik Jung'
+    );
+
+CALL add_copies(
+        3,
+        'Blu-Ray',
+        60.55,
+        4,
+        ''
+    );
+
+CALL new_customer(
+        'Rusell',
+        'Jason',
+        CURDATE(),
+        '09892348432',
+        'Elsewhere'
+    );
+
+CALL hire(
+    'Villegas',
+    'Luis',
+    CURDATE(),
+    '09263233823',
+    'Anywhere'
+    );
+    
+ --
+ 
+ 
+
