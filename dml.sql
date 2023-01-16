@@ -204,8 +204,183 @@ CALL add_copies(
         30,
         ''
     );
+CALL new_movie(
+        1,
+        'I and Me',
+        '2022-07-12',
+        'Hans Andersen'
+    );
     
+CALL add_copies(
+        12,
+        'DVD',
+        20.55,
+        30,
+        ''
+    ); 
+CALL add_copies(
+        12,
+        'Blu-Ray',
+        10.55,
+        30,
+        ''
+    );    
+CALL new_movie(
+        3,
+        'Where Tangent Meets',
+        '2021-09-01',
+        'Fred Gonzales'
+    );
     
+CALL add_copies(
+        13,
+        'DVD',
+        30.55,
+        30,
+        ''
+    ); 
+CALL add_copies(
+        13,
+        'Blu-Ray',
+        20.55,
+        30,
+        ''
+    );
+CALL new_movie(
+        2,
+        'Foreigner',
+        '2021-10-12',
+        'Hale Carton'
+    );
+    
+CALL add_copies(
+        14,
+        'DVD',
+        50.55,
+        30,
+        ''
+    ); 
+CALL add_copies(
+        14,
+        'Blu-Ray',
+        30.55,
+        30,
+        ''
+    );
+CALL new_movie(
+        6,
+        'Laugh Bitch',
+        '2021-03-10',
+        'Karen Alvarez'
+    );
+    
+CALL add_copies(
+        15,
+        'DVD',
+        20.55,
+        40,
+        ''
+    ); 
+CALL add_copies(
+        15,
+        'Blu-Ray',
+        10.55,
+        30,
+        ''
+    );
+ CALL new_movie(
+        4,
+        'The Last of Us',
+        '2020-03-12',
+        'Andrei Akman'
+    );
+    
+CALL add_copies(
+        16,
+        'DVD',
+        50.55,
+        30,
+        ''
+    ); 
+CALL add_copies(
+        16,
+        'Blu-Ray',
+        30.55,
+        30,
+        ''
+    );
+CALL new_movie(
+        5,
+        'Age Of All Evils',
+        '2021-05-01',
+        'Leon Falor'
+    );
+    
+CALL add_copies(
+        17,
+        'DVD',
+        20.55,
+        30,
+        ''
+    ); 
+CALL add_copies(
+        17,
+        'Blu-Ray',
+        10.55,
+        30,
+        ''
+    );
+CALL new_movie(
+        5,
+        'Sandman',
+        '2020-04-10',
+        'Nicholas Hart'
+    );
+    
+CALL add_copies(
+        18,
+        'DVD',
+        50.55,
+        30,
+        ''
+    ); 
+CALL add_copies(
+        18,
+        'Blu-Ray',
+        30.55,
+        30,
+        ''
+    );
+CALL new_movie(
+        1,
+        'Secrets',
+        '2021-03-09',
+        'Ains Facolor'
+    );
+    
+CALL add_copies(
+        19,
+        'DVD',
+        30.55,
+        40,
+        ''
+    ); 
+CALL new_movie(
+        3,
+        'Red Strings',
+        '2020-05-01',
+        'Peter Hoffman'
+    );
+    
+CALL add_copies(
+        20,
+        'DVD',
+        40.55,
+        20,
+        ''
+    ); 
+ 
+  
 
 
 CALL new_customer(
