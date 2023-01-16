@@ -1,5 +1,7 @@
 USE video_town;
 
+DROP FUNCTION IF EXISTS is_copy_borrowed;
+
 CREATE FUNCTION is_copy_borrowed(_copy_id BIGINT)
     RETURNS BOOLEAN
     DETERMINISTIC
@@ -29,6 +31,8 @@ BEGIN
     RETURN is_borrowed;
 END;
 
+DROP PROCEDURE IF EXISTS new_customer;
+
 CREATE PROCEDURE new_customer(
     _last_name VARCHAR(50),
     _first_name VARCHAR(50),
@@ -47,6 +51,8 @@ BEGIN
     LIMIT 1;
 END;
 
+DROP PROCEDURE IF EXISTS update_customer;
+
 CREATE PROCEDURE update_customer(
     _customer_id BIGINT,
     _last_name VARCHAR(50),
@@ -64,9 +70,10 @@ BEGIN
 
     DROP TEMPORARY TABLE IF EXISTS customer_to_update;
 
-    CREATE TEMPORARY TABLE customer_to_update AS (SELECT *
-                                                  FROM customers
-                                                  WHERE customer_id = _customer_id);
+    CREATE TEMPORARY TABLE customer_to_update
+    AS (SELECT *
+        FROM customers
+        WHERE customer_id = _customer_id);
 
     SELECT last_name FROM customer_to_update INTO __last_name;
     SELECT first_name FROM customer_to_update INTO __first_name;
@@ -102,6 +109,8 @@ BEGIN
     WHERE customer_id = _customer_id;
 END;
 
+DROP PROCEDURE IF EXISTS hire;
+
 CREATE PROCEDURE hire(
     _last_name VARCHAR(50),
     _first_name VARCHAR(50),
@@ -119,6 +128,8 @@ BEGIN
     ORDER BY employee_id DESC
     LIMIT 1;
 END;
+
+DROP PROCEDURE IF EXISTS update_employee;
 
 CREATE PROCEDURE update_employee(
     _employee_id BIGINT,
@@ -176,6 +187,8 @@ BEGIN
     WHERE employee_id = _employee_id;
 END;
 
+DROP PROCEDURE IF EXISTS new_genre;
+
 CREATE PROCEDURE new_genre(
     _tag VARCHAR(50),
     _aisle_number INT
@@ -190,6 +203,8 @@ BEGIN
     ORDER BY genre_id DESC
     LIMIT 1;
 END;
+
+DROP PROCEDURE IF EXISTS update_genre;
 
 CREATE PROCEDURE update_genre(
     _genre_id BIGINT,
@@ -227,6 +242,8 @@ BEGIN
     WHERE genre_id = _genre_id;
 END;
 
+DROP PROCEDURE IF EXISTS new_movie;
+
 CREATE PROCEDURE new_movie(
     _genre_id BIGINT,
     _title VARCHAR(50),
@@ -243,6 +260,8 @@ BEGIN
     ORDER BY genre_id DESC
     LIMIT 1;
 END;
+
+DROP PROCEDURE IF EXISTS update_movie;
 
 CREATE PROCEDURE update_movie(
     _movie_id BIGINT,
@@ -294,6 +313,8 @@ BEGIN
     WHERE movie_id = _movie_id;
 END;
 
+DROP PROCEDURE IF EXISTS add_copies;
+
 CREATE PROCEDURE add_copies(
     _movie_id BIGINT,
     _medium_format VARCHAR(10),
@@ -320,6 +341,8 @@ BEGIN
       AND remarks = _remarks
     ORDER BY copy_id DESC;
 END;
+
+DROP PROCEDURE IF EXISTS update_copy;
 
 CREATE PROCEDURE update_copy(
     _copy_id BIGINT,
@@ -370,6 +393,8 @@ BEGIN
     WHERE copy_id = _copy_id;
 END;
 
+DROP PROCEDURE IF EXISTS start_transaction;
+
 CREATE PROCEDURE start_transaction(
     _customer_id BIGINT,
     _cashier_employee_id BIGINT,
@@ -396,6 +421,8 @@ BEGIN
         SELECT 'You have to close your previous transaction first.';
     END IF;
 END;
+
+DROP PROCEDURE IF EXISTS add_item;
 
 CREATE PROCEDURE add_item(
     _copy_id BIGINT
@@ -434,6 +461,8 @@ BEGIN
     END IF;
 END;
 
+DROP PROCEDURE IF EXISTS end_transaction;
+
 CREATE PROCEDURE end_transaction()
 BEGIN
     DECLARE is_last_transaction_done BOOL DEFAULT TRUE;
@@ -467,6 +496,8 @@ BEGIN
     END IF;
 END;
 
+DROP PROCEDURE IF EXISTS start_seed_transaction;
+
 CREATE PROCEDURE start_seed_transaction(
     _customer_id BIGINT,
     _cashier_employee_id BIGINT,
@@ -494,6 +525,8 @@ BEGIN
         SELECT 'You have to close your previous transaction first.';
     END IF;
 END;
+
+DROP PROCEDURE IF EXISTS add_seed_item;
 
 CREATE PROCEDURE add_seed_item(
     _copy_id BIGINT
@@ -531,6 +564,8 @@ BEGIN
         SELECT 'You currently have no open transactions.';
     END IF;
 END;
+
+DROP PROCEDURE IF EXISTS end_seed_transaction;
 
 CREATE PROCEDURE end_seed_transaction()
 BEGIN
