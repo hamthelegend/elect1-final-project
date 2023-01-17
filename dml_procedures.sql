@@ -907,4 +907,3 @@ BEGIN
         SELECT 'You currently have no open transactions.';
     END IF;
 END;
-
