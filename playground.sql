@@ -1,50 +1,49 @@
 USE video_town;
 
-CALL new_genre('Crazy', 1);
+CALL customers;
 
-CALL new_movie(
-        1,
-        'Moon Knight: The Movie',
-        '2021-01-10',
-        'hamthelegend'
-    );
+CALL customer(12);
 
-CALL add_copies(
-        1,
-        'DVD',
-        99.99,
-        5,
-        ''
-    );
+CALL employees;
 
-CALL new_customer(
-        'Manalansan',
-        'Justine',
-        CURDATE(),
-        '09999999999',
-        'Here'
-    );
+CALL employee(4);
 
-CALL hire(
-    'David',
-    'Jonel',
-    CURDATE(),
-    '09888888888',
-    'There'
-    );
+CALL genres;
 
-CALL start_transaction(
-    1,
-    1,
-    FALSE
-    );
-CALL add_item(1);
-CALL end_transaction();
+CALL genre(3);
 
-CALL start_transaction(
-    1,
-    1,
-    TRUE
-    );
-CALL add_item(2);
-CALL end_transaction();
+CALL movies;
+
+CALL movie(3);
+
+CALL copies(1);
+
+CALL copy(3);
+
+CALL transactions;
+
+CALL rent_transactions();
+
+CALL return_transactions();
+
+CALL transaction(8);
+
+CALL transaction_contents(8);
+
+CALL copies_rented_by_month(2021);
+
+CALL top_five_movies_from_genre_by_revenue(3);
+
+CALL top_ten_movies_by_revenue();
+
+CALL customers_by_month(2021);
+
+CALL top_customers_by_month(2021);
+
+CALL best_employee_by_year;
+
+CALL unreturned_copies;
+
+CALL start_seed_transaction(1, 1, '2023-01-17 15:10:59.934792', TRUE);
+CALL add_seed_item(1);
+CALL end_seed_transaction();
