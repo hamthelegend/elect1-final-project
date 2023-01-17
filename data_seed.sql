@@ -1168,5 +1168,3 @@ CALL hire_seed(
     '09342454352',
     'Marisol, Angeles City, Pampanga'
     );
-    
- 

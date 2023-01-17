@@ -53,7 +53,7 @@ CREATE TABLE copies
     movie_id      BIGINT       NOT NULL,
     medium_format VARCHAR(10)  NOT NULL,
     cost          DEC(65, 2)   NOT NULL,
-    remarks       VARCHAR(100),
+    remarks       VARCHAR(100) DEFAULT '',
     PRIMARY KEY (copy_id),
     FOREIGN KEY (movie_id) REFERENCES movies (movie_id)
 );

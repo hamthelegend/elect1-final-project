@@ -415,5 +415,3 @@ BEGIN
     WHERE is_copy_borrowed(cp.copy_id)
     ORDER BY copy_id;
 END;
-
-DROP PROCEDURE IF EXISTS customer_clearance
