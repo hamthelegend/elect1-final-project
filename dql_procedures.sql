@@ -301,7 +301,7 @@ BEGIN
     WHERE NOT is_return
       AND g.genre_id = _genre_id
     GROUP BY m.movie_id
-    ORDER BY copiesRented DESC
+    ORDER BY totalRevenue DESC
     LIMIT 5;
 END;
 
@@ -415,5 +415,3 @@ BEGIN
     WHERE is_copy_borrowed(cp.copy_id)
     ORDER BY copy_id;
 END;
-
-DROP PROCEDURE IF EXISTS customer_clearance
