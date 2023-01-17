@@ -504,6 +504,32 @@ BEGIN
     END IF;
 END;
 
+CREATE PROCEDURE void_transaction()
+BEGIN
+    DECLARE is_last_transaction_done BOOL DEFAULT TRUE;
+    DECLARE _transaction_id BIGINT;
+
+    DROP TEMPORARY TABLE IF EXISTS last_transaction;
+
+    CREATE TEMPORARY TABLE last_transaction
+    AS (SELECT transaction_id, is_closed
+        FROM transactions
+        ORDER BY time_processed DESC
+        LIMIT 1);
+
+    SELECT is_closed FROM last_transaction INTO is_last_transaction_done;
+    SELECT transaction_id FROM last_transaction INTO _transaction_id;
+
+    IF NOT is_last_transaction_done THEN
+        DELETE FROM transactions WHERE transaction_id = _transaction_id;
+        DELETE FROM transaction_contents WHERE transaction_id = _transaction_id;
+
+        SELECT 'Transaction voided.';
+    ELSE
+        SELECT 'You currently have no open transactions.';
+    END IF;
+END;
+
 DROP PROCEDURE IF EXISTS new_seed_customer;
 
 CREATE PROCEDURE new_seed_customer(

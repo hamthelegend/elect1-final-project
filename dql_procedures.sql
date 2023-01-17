@@ -137,6 +137,28 @@ BEGIN
     GROUP BY transaction_id;
 END;
 
+DROP PROCEDURE IF EXISTS transactions_by_customer;
+CREATE PROCEDURE transactions_by_customer(_customer_id BIGINT)
+BEGIN
+        SELECT t.transaction_id,
+           c.customer_id                          AS customer_id,
+           CONCAT(c.first_name, ' ', c.last_name) AS customer,
+           e.employee_id                          AS cashier_employee_id,
+           CONCAT(e.first_name, ' ', e.last_name) AS cashier_employee,
+           time_processed,
+           is_return,
+           GROUP_CONCAT(title)                    AS items,
+           is_closed
+    FROM transactions t
+             JOIN customers c ON c.customer_id = t.customer_id
+             JOIN employees e ON e.employee_id = t.cashier_employee_id
+             JOIN transaction_contents tc ON t.transaction_id = tc.transaction_id
+             JOIN copies cp ON tc.copy_id = cp.copy_id
+             JOIN movies m ON cp.movie_id = m.movie_id
+    WHERE c.customer_id = _customer_id
+    GROUP BY transaction_id;
+END;
+
 DROP PROCEDURE IF EXISTS rent_transactions;
 
 CREATE PROCEDURE rent_transactions()
@@ -401,6 +423,7 @@ BEGIN
     SELECT cp.copy_id,
            medium_format,
            cost,
+           c.customer_id AS borrower_customer_id,
            CONCAT(first_name, ' ', last_name) AS borrower,
            remarks,
            m.movie_id,
@@ -416,4 +439,24 @@ BEGIN
     ORDER BY copy_id;
 END;
 
-DROP PROCEDURE IF EXISTS customer_clearance
+DROP PROCEDURE IF EXISTS unreturned_copies_by_customer;
+CREATE PROCEDURE unreturned_copies_by_customer(_customer_id BIGINT)
+BEGIN
+    SELECT cp.copy_id,
+           medium_format,
+           cost,
+           c.customer_id AS borrower_customer_id,
+           CONCAT(first_name, ' ', last_name) AS borrower,
+           remarks,
+           m.movie_id,
+           title,
+           aisle_number
+    FROM transaction_contents tc
+             JOIN transactions t ON t.transaction_id = tc.transaction_id
+             JOIN customers c ON c.customer_id = t.customer_id
+             JOIN copies cp ON cp.copy_id = tc.copy_id
+             JOIN movies m ON m.movie_id = cp.movie_id
+             JOIN genres g ON g.genre_id = m.genre_id
+    WHERE is_copy_borrowed(cp.copy_id) AND _customer_id = c.customer_id
+    ORDER BY copy_id;
+END;
