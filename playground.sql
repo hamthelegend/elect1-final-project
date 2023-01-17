@@ -48,12 +48,6 @@ CALL unreturned_copies;
 
 CALL unreturned_copies_by_customer(1);
 
-CALL start_seed_transaction(1, 1, '2023-01-17 15:10:59.934792', TRUE);
-
-CALL add_seed_item(1);
-
-CALL end_seed_transaction();
-
 CALL customer(1);
 CALL update_customer(1, NULL, NULL, NULL, '09123456789', 'Over there');
 CALL customer(1);
