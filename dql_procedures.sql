@@ -350,6 +350,7 @@ BEGIN
     WITH cte
              AS (SELECT MONTH(t.time_processed)          AS month,
                         c.customer_id,
+                        CONCAT(c.first_name, ' ', c.last_name) AS customer,
                         COUNT(tc.transaction_content_id) AS movies_rented
                  FROM transaction_contents tc
                           JOIN transactions t ON t.transaction_id = tc.transaction_id

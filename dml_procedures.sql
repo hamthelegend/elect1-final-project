@@ -493,10 +493,7 @@ BEGIN
             is_closed      = TRUE
         WHERE transaction_id = _transaction_id;
 
-        SELECT *
-        FROM transactions
-        ORDER BY time_processed DESC
-        LIMIT 1;
+        CALL transaction(_transaction_id);
     ELSEIF NOT _has_contents THEN
         SELECT 'Please add at least 1 item to this transaction before closing it.';
     ELSE
@@ -504,6 +501,7 @@ BEGIN
     END IF;
 END;
 
+DROP PROCEDURE IF EXISTS void_transaction;
 CREATE PROCEDURE void_transaction()
 BEGIN
     DECLARE is_last_transaction_done BOOL DEFAULT TRUE;
