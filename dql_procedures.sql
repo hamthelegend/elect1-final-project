@@ -85,10 +85,6 @@ BEGIN
            remarks,
            m.movie_id,
            title,
-           release_date,
-           director,
-           g.genre_id,
-           tag                           AS genre,
            aisle_number
     FROM copies c
              JOIN movies m ON m.movie_id = c.movie_id
@@ -192,18 +188,18 @@ DROP PROCEDURE IF EXISTS transaction;
 
 CREATE PROCEDURE transaction(_transaction_id BIGINT)
 BEGIN
-    DECLARE is_return BOOL;
+    DECLARE _is_return BOOL;
 
-    SELECT is_return FROM transactions WHERE transaction_id = _transaction_id;
+    SELECT is_return FROM transactions WHERE transaction_id = _transaction_id INTO _is_return;
 
-    IF is_return THEN
+    IF _is_return THEN
         SELECT t.transaction_id,
                c.customer_id                          AS customer_id,
                CONCAT(c.first_name, ' ', c.last_name) AS customer,
                e.employee_id                          AS cashier_employee_id,
                CONCAT(e.first_name, ' ', e.last_name) AS cashier_employee,
                time_processed,
-               is_return,
+               _is_return,
                GROUP_CONCAT(title)                    AS items,
                is_closed
         FROM transactions t
@@ -259,7 +255,7 @@ DROP PROCEDURE IF EXISTS copies_rented_by_month;
 CREATE PROCEDURE copies_rented_by_month(year INT)
 BEGIN
     SELECT MONTH(time_processed)            AS month,
-           COUNT(tc.transaction_content_id) AS copiesRented,
+           COUNT(tc.transaction_content_id) AS copies_rented,
            SUM(c.cost)                      AS revenue
     FROM transaction_contents tc
              JOIN transactions t ON t.transaction_id = tc.transaction_id
@@ -270,13 +266,13 @@ BEGIN
     GROUP BY MONTH(time_processed);
 END;
 
-DROP PROCEDURE IF EXISTS top_five_movies_from_genre;
+DROP PROCEDURE IF EXISTS top_five_movies_from_genre_by_copies_rented;
 
-CREATE PROCEDURE top_five_movies_from_genre(_genre_id BIGINT)
+CREATE PROCEDURE top_five_movies_from_genre_by_copies_rented(_genre_id BIGINT)
 BEGIN
     SELECT m.movie_id,
            m.title,
-           COUNT(tc.transaction_content_id) AS copiesRented
+           COUNT(tc.transaction_content_id) AS copies_rented
     FROM transaction_contents tc
              JOIN transactions t ON t.transaction_id = tc.transaction_id
              JOIN copies c ON c.copy_id = tc.copy_id
@@ -285,7 +281,8 @@ BEGIN
     WHERE NOT is_return
       AND g.genre_id = _genre_id
     GROUP BY m.movie_id
-    ORDER BY copiesRented;
+    ORDER BY copies_rented DESC
+    LIMIT 5;
 END;
 
 DROP PROCEDURE IF EXISTS top_five_movies_from_genre_by_revenue;
@@ -304,49 +301,119 @@ BEGIN
     WHERE NOT is_return
       AND g.genre_id = _genre_id
     GROUP BY m.movie_id
-    ORDER BY copiesRented;
+    ORDER BY copiesRented DESC
+    LIMIT 5;
 END;
 
-# CREATE PROCEDURE top_five_movies_from_genre_by_revenue(_genre_id BIGINT)
-# BEGIN
-#     SELECT
-#         m.movie_id,
-#         m.title,
-#         COUNT(tc.transaction_content_id) AS copiesRented,
-#         SUM(cost) AS totalRevenue
-#     FROM transaction_contents tc
-#     JOIN transactions t ON t.transaction_id = tc.transaction_id
-#     JOIN copies c ON c.copy_id = tc.copy_id
-#     JOIN movies m ON m.movie_id = c.movie_id
-#     JOIN genres g ON g.genre_id = m.genre_id
-#     WHERE NOT is_return AND g.genre_id = _genre_id
-#     GROUP BY m.movie_id
-#     ORDER BY copiesRented;
-# END;
+DROP PROCEDURE IF EXISTS top_ten_movies_by_revenue;
+CREATE PROCEDURE top_ten_movies_by_revenue()
+BEGIN
+    SELECT m.movie_id,
+           m.title,
+           COUNT(tc.transaction_content_id) AS copiesRented,
+           SUM(cost)                        AS totalRevenue
+    FROM transaction_contents tc
+             JOIN transactions t ON t.transaction_id = tc.transaction_id
+             JOIN copies c ON c.copy_id = tc.copy_id
+             JOIN movies m ON m.movie_id = c.movie_id
+    WHERE NOT t.is_return
+    GROUP BY m.movie_id
+    ORDER BY totalRevenue DESC
+    LIMIT 10;
+END;
 
-# CREATE PROCEDURE top_ten_movies_by_revenue()
-# BEGIN
-#     SELECT
-#         m.movie_id,
-#         m.title,
-#         COUNT(tc.transaction_content_id) AS copiesRented,
-#         SUM(cost) AS totalRevenue
-#     FROM transaction_contents tc
-#     JOIN transactions t ON t.transaction_id = tc.transaction_id
-#     JOIN copies c ON c.copy_id = tc.copy_id
-#     JOIN movies m ON m.movie_id = c.movie_id
-#     GROUP BY m.movie_id
-#     ORDER BY copiesRented;
-# END;
-#
-# CREATE PROCEDURE top_customers_by_month(_year INT)
-# BEGIN
-#     SELECT
-#         *
-#     FROM transaction_contents tc
-#     JOIN transactions t ON t.transaction_id = tc.transaction_id
-#     JOIN customers c ON c.customer_id = t.customer_id
-#     WHERE YEAR(time_processed) = _year
-#     GROUP BY MONTH(t.time_processed), c.customer_id;
-# END;
-#
+DROP PROCEDURE IF EXISTS customers_by_month;
+CREATE PROCEDURE customers_by_month(_year INT)
+BEGIN
+    WITH cte
+             AS (SELECT MONTH(t.time_processed)          AS month,
+                        c.customer_id,
+                        COUNT(tc.transaction_content_id) AS movies_rented
+                 FROM transaction_contents tc
+                          JOIN transactions t ON t.transaction_id = tc.transaction_id
+                          JOIN customers c ON c.customer_id = t.customer_id
+                 WHERE YEAR(time_processed) = _year
+                   AND NOT is_return
+                 GROUP BY month, c.customer_id)
+    SELECT *
+    FROM cte;
+
+END;
+
+DROP PROCEDURE IF EXISTS top_customers_by_month;
+CREATE PROCEDURE top_customers_by_month(_year INT)
+BEGIN
+    WITH cte
+             AS (SELECT MONTH(t.time_processed)                AS month,
+                        c.customer_id,
+                        CONCAT(c.first_name, ' ', c.last_name) AS customer,
+                        COUNT(tc.transaction_content_id)       AS movies_rented
+                 FROM transaction_contents tc
+                          JOIN transactions t ON t.transaction_id = tc.transaction_id
+                          JOIN customers c ON c.customer_id = t.customer_id
+                 WHERE YEAR(time_processed) = _year
+                   AND NOT is_return
+                 GROUP BY month, c.customer_id)
+    SELECT t1.month,
+           t1.customer_id,
+           t1.customer,
+           t1.movies_rented
+    FROM cte t1
+             INNER JOIN (SELECT month,
+                                MAX(movies_rented) AS max_rented
+                         FROM cte
+                         GROUP BY month) t2
+                        ON t1.month = t2.month AND t1.movies_rented = t2.max_rented
+    ORDER BY t1.month;
+
+END;
+
+DROP PROCEDURE IF EXISTS best_employee_by_year;
+CREATE PROCEDURE best_employee_by_year()
+BEGIN
+    WITH cte
+             AS (SELECT YEAR(t.time_processed)                 AS year,
+                        e.employee_id,
+                        CONCAT(e.first_name, ' ', e.last_name) AS employee,
+                        SUM(cost)                              AS revenue
+                 FROM transaction_contents tc
+                          JOIN transactions t ON t.transaction_id = tc.transaction_id
+                          JOIN employees e ON e.employee_id = t.cashier_employee_id
+                          JOIN copies c ON c.copy_id = tc.copy_id
+                 WHERE NOT is_return
+                 GROUP BY year, e.employee_id)
+    SELECT t1.year,
+           t1.employee_id,
+           t1.employee,
+           t1.revenue
+    FROM cte t1
+             INNER JOIN (SELECT year,
+                                MAX(revenue) AS max_revenue
+                         FROM cte
+                         GROUP BY year) t2
+                        ON t1.year = t2.year AND t1.revenue = t2.max_revenue
+    ORDER BY t1.year;
+END;
+
+DROP PROCEDURE IF EXISTS unreturned_copies;
+CREATE PROCEDURE unreturned_copies()
+BEGIN
+    SELECT cp.copy_id,
+           medium_format,
+           cost,
+           CONCAT(first_name, ' ', last_name) AS borrower,
+           remarks,
+           m.movie_id,
+           title,
+           aisle_number
+    FROM transaction_contents tc
+             JOIN transactions t ON t.transaction_id = tc.transaction_id
+             JOIN customers c ON c.customer_id = t.customer_id
+             JOIN copies cp ON cp.copy_id = tc.copy_id
+             JOIN movies m ON m.movie_id = cp.movie_id
+             JOIN genres g ON g.genre_id = m.genre_id
+    WHERE is_copy_borrowed(cp.copy_id)
+    ORDER BY copy_id;
+END;
+
+DROP PROCEDURE IF EXISTS customer_clearance

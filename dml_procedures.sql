@@ -473,6 +473,7 @@ CREATE PROCEDURE end_transaction()
 BEGIN
     DECLARE is_last_transaction_done BOOL DEFAULT TRUE;
     DECLARE _transaction_id BIGINT;
+    DECLARE _has_contents BOOL DEFAULT FALSE;
 
     DROP TEMPORARY TABLE IF EXISTS last_transaction;
 
@@ -484,10 +485,9 @@ BEGIN
 
     SELECT is_closed FROM last_transaction INTO is_last_transaction_done;
     SELECT transaction_id FROM last_transaction INTO _transaction_id;
+    SELECT COUNT(transaction_content_id) > 0 FROM transaction_contents WHERE transaction_id = _transaction_id INTO _has_contents;
 
-    DROP TEMPORARY TABLE last_transaction;
-
-    IF NOT is_last_transaction_done THEN
+    IF NOT is_last_transaction_done AND _has_contents THEN
         UPDATE transactions
         SET time_processed = NOW(6),
             is_closed      = TRUE
@@ -497,6 +497,8 @@ BEGIN
         FROM transactions
         ORDER BY time_processed DESC
         LIMIT 1;
+    ELSEIF NOT _has_contents THEN
+        SELECT 'Please add at least 1 item to this transaction before closing it.';
     ELSE
         SELECT 'You currently have no open transactions.';
     END IF;
@@ -881,6 +883,7 @@ CREATE PROCEDURE end_seed_transaction()
 BEGIN
     DECLARE is_last_transaction_done BOOL DEFAULT TRUE;
     DECLARE _transaction_id BIGINT;
+    DECLARE _has_contents BOOL DEFAULT FALSE;
 
     DROP TEMPORARY TABLE IF EXISTS last_transaction;
 
@@ -892,13 +895,14 @@ BEGIN
 
     SELECT is_closed FROM last_transaction INTO is_last_transaction_done;
     SELECT transaction_id FROM last_transaction INTO _transaction_id;
+    SELECT COUNT(transaction_content_id) > 0 FROM transaction_contents WHERE transaction_id = _transaction_id INTO _has_contents;
 
-    DROP TEMPORARY TABLE last_transaction;
-
-    IF NOT is_last_transaction_done THEN
+    IF NOT is_last_transaction_done AND _has_contents THEN
         UPDATE transactions
         SET is_closed = TRUE
         WHERE transaction_id = _transaction_id;
+    ELSEIF NOT _has_contents THEN
+        SELECT 'Please add at least 1 item to this transaction before closing it.';
     ELSE
         SELECT 'You currently have no open transactions.';
     END IF;
