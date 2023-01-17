@@ -323,7 +323,7 @@ BEGIN
     WHERE NOT is_return
       AND g.genre_id = _genre_id
     GROUP BY m.movie_id
-    ORDER BY copiesRented DESC
+    ORDER BY totalRevenue DESC
     LIMIT 5;
 END;
 
