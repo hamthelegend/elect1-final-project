@@ -36,8 +36,8 @@ CALL transaction_contents(8);
 CALL copies_rented_by_month(2021);
 
 # Top 5 movies rented by genre
-CALL top_five_movies_from_genre_by_copies_rented(5); # fantasy
-CALL top_five_movies_from_genre_by_revenue(5);
+CALL top_five_movies_by_genre_by_copies_rented;
+CALL top_five_movies_by_genre_by_revenue;
 
 # Top 10 most popular movies by revenue (from rental)
 CALL top_ten_movies_by_revenue();
@@ -92,3 +92,5 @@ CALL hire('Diaz', 'Jericho', '2022-01-01', '09999999999', 'There');
 # New shipment of movies
 CALL new_movie(2, 'The Boys: The Movie', '2023-01-01', 'Blythe Espiritu');
 CALL add_copies(61, 'DVD', 1.00, 10, 'Brand new');
+
+CALL copy_transaction_history(370);

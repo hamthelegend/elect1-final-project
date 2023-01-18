@@ -1,7 +1,6 @@
 USE video_town;
 
 DROP FUNCTION IF EXISTS is_copy_borrowed;
-
 CREATE FUNCTION is_copy_borrowed(_copy_id BIGINT)
     RETURNS BOOLEAN
     DETERMINISTIC
@@ -32,7 +31,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS new_customer;
-
 CREATE PROCEDURE new_customer(
     _last_name VARCHAR(50),
     _first_name VARCHAR(50),
@@ -52,7 +50,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS update_customer;
-
 CREATE PROCEDURE update_customer(
     _customer_id BIGINT,
     _last_name VARCHAR(50),
@@ -110,7 +107,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS hire;
-
 CREATE PROCEDURE hire(
     _last_name VARCHAR(50),
     _first_name VARCHAR(50),
@@ -130,7 +126,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS update_employee;
-
 CREATE PROCEDURE update_employee(
     _employee_id BIGINT,
     _last_name VARCHAR(50),
@@ -188,7 +183,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS new_genre;
-
 CREATE PROCEDURE new_genre(
     _tag VARCHAR(50),
     _aisle_number INT
@@ -205,7 +199,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS update_genre;
-
 CREATE PROCEDURE update_genre(
     _genre_id BIGINT,
     _tag VARCHAR(50),
@@ -243,7 +236,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS new_movie;
-
 CREATE PROCEDURE new_movie(
     _genre_id BIGINT,
     _title VARCHAR(50),
@@ -262,7 +254,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS update_movie;
-
 CREATE PROCEDURE update_movie(
     _movie_id BIGINT,
     _genre_id BIGINT,
@@ -314,7 +305,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS add_copies;
-
 CREATE PROCEDURE add_copies(
     _movie_id BIGINT,
     _medium_format VARCHAR(10),
@@ -343,7 +333,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS update_copy;
-
 CREATE PROCEDURE update_copy(
     _copy_id BIGINT,
     _movie_id BIGINT,
@@ -394,7 +383,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS start_transaction;
-
 CREATE PROCEDURE start_transaction(
     _customer_id BIGINT,
     _cashier_employee_id BIGINT,
@@ -423,7 +411,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS add_item;
-
 CREATE PROCEDURE add_item(
     _copy_id BIGINT
 )
@@ -468,7 +455,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS end_transaction;
-
 CREATE PROCEDURE end_transaction()
 BEGIN
     DECLARE is_last_transaction_done BOOL DEFAULT TRUE;
@@ -529,7 +515,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS new_seed_customer;
-
 CREATE PROCEDURE new_seed_customer(
     _last_name VARCHAR(50),
     _first_name VARCHAR(50),
@@ -543,7 +528,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS update_seed_customer;
-
 CREATE PROCEDURE update_seed_customer(
     _customer_id BIGINT,
     _last_name VARCHAR(50),
@@ -597,7 +581,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS hire_seed;
-
 CREATE PROCEDURE hire_seed(
     _last_name VARCHAR(50),
     _first_name VARCHAR(50),
@@ -611,7 +594,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS update_seed_employee;
-
 CREATE PROCEDURE update_seed_employee(
     _employee_id BIGINT,
     _last_name VARCHAR(50),
@@ -665,7 +647,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS new_seed_genre;
-
 CREATE PROCEDURE new_seed_genre(
     _tag VARCHAR(50),
     _aisle_number INT
@@ -676,7 +657,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS update_seed_genre;
-
 CREATE PROCEDURE update_seed_genre(
     _genre_id BIGINT,
     _tag VARCHAR(50),
@@ -710,7 +690,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS new_seed_movie;
-
 CREATE PROCEDURE new_seed_movie(
     _genre_id BIGINT,
     _title VARCHAR(50),
@@ -723,7 +702,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS update_seed_movie;
-
 CREATE PROCEDURE update_seed_movie(
     _movie_id BIGINT,
     _genre_id BIGINT,
@@ -771,7 +749,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS add_seed_copies;
-
 CREATE PROCEDURE add_seed_copies(
     _movie_id BIGINT,
     _medium_format VARCHAR(10),
@@ -792,7 +769,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS update_seed_copy;
-
 CREATE PROCEDURE update_seed_copy(
     _copy_id BIGINT,
     _movie_id BIGINT,
@@ -839,7 +815,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS start_seed_transaction;
-
 CREATE PROCEDURE start_seed_transaction(
     _customer_id BIGINT,
     _cashier_employee_id BIGINT,
@@ -864,7 +839,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS add_seed_item;
-
 CREATE PROCEDURE add_seed_item(
     _copy_id BIGINT
 )
@@ -902,7 +876,6 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS end_seed_transaction;
-
 CREATE PROCEDURE end_seed_transaction()
 BEGIN
     DECLARE is_last_transaction_done BOOL DEFAULT TRUE;
