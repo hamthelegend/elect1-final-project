@@ -137,6 +137,28 @@ BEGIN
     GROUP BY transaction_id;
 END;
 
+DROP PROCEDURE IF EXISTS transactions_by_customer;
+CREATE PROCEDURE transactions_by_customer(_customer_id BIGINT)
+BEGIN
+        SELECT t.transaction_id,
+           c.customer_id                          AS customer_id,
+           CONCAT(c.first_name, ' ', c.last_name) AS customer,
+           e.employee_id                          AS cashier_employee_id,
+           CONCAT(e.first_name, ' ', e.last_name) AS cashier_employee,
+           time_processed,
+           is_return,
+           GROUP_CONCAT(title)                    AS items,
+           is_closed
+    FROM transactions t
+             JOIN customers c ON c.customer_id = t.customer_id
+             JOIN employees e ON e.employee_id = t.cashier_employee_id
+             JOIN transaction_contents tc ON t.transaction_id = tc.transaction_id
+             JOIN copies cp ON tc.copy_id = cp.copy_id
+             JOIN movies m ON cp.movie_id = m.movie_id
+    WHERE c.customer_id = _customer_id
+    GROUP BY transaction_id;
+END;
+
 DROP PROCEDURE IF EXISTS rent_transactions;
 
 CREATE PROCEDURE rent_transactions()
@@ -328,6 +350,7 @@ BEGIN
     WITH cte
              AS (SELECT MONTH(t.time_processed)          AS month,
                         c.customer_id,
+                        CONCAT(c.first_name, ' ', c.last_name) AS customer,
                         COUNT(tc.transaction_content_id) AS movies_rented
                  FROM transaction_contents tc
                           JOIN transactions t ON t.transaction_id = tc.transaction_id
@@ -401,6 +424,7 @@ BEGIN
     SELECT cp.copy_id,
            medium_format,
            cost,
+           c.customer_id AS borrower_customer_id,
            CONCAT(first_name, ' ', last_name) AS borrower,
            remarks,
            m.movie_id,
@@ -415,3 +439,113 @@ BEGIN
     WHERE is_copy_borrowed(cp.copy_id)
     ORDER BY copy_id;
 END;
+
+DROP PROCEDURE IF EXISTS unreturned_copies_by_customer;
+CREATE PROCEDURE unreturned_copies_by_customer(_customer_id BIGINT)
+BEGIN
+    SELECT cp.copy_id,
+           medium_format,
+           cost,
+           c.customer_id AS borrower_customer_id,
+           CONCAT(first_name, ' ', last_name) AS borrower,
+           remarks,
+           m.movie_id,
+           title,
+           aisle_number
+    FROM transaction_contents tc
+             JOIN transactions t ON t.transaction_id = tc.transaction_id
+             JOIN customers c ON c.customer_id = t.customer_id
+             JOIN copies cp ON cp.copy_id = tc.copy_id
+             JOIN movies m ON m.movie_id = cp.movie_id
+             JOIN genres g ON g.genre_id = m.genre_id
+    WHERE is_copy_borrowed(cp.copy_id) AND _customer_id = c.customer_id
+    ORDER BY copy_id;
+END;
+
+DROP PROCEDURE IF EXISTS copy_transaction_history; 
+CREATE PROCEDURE copy_transaction_history(_copy_id BIGINT)
+	BEGIN
+		SELECT c.copy_id,
+               medium_format,
+               tc.transaction_id,
+               time_processed,
+               CONCAT(cs.first_name, ' ',cs.last_name) AS customer,
+			   title,
+               is_return,
+               is_closed
+		FROM copies c
+			 JOIN movies m ON m.movie_id = c.movie_id
+			 JOIN transaction_contents tc ON tc.copy_id = c.copy_id
+             JOIN transactions t ON t.transaction_id = tc.transaction_id
+             JOIN customers cs ON cs.customer_id = t.customer_id
+		WHERE c.copy_id = _copy_id;
+        
+	END;
+    
+     DROP PROCEDURE IF EXISTS Top_5_rented_by_genre;
+CREATE PROCEDURE Top_5_rented_by_genre()
+	BEGIN
+     DROP TABLE IF EXISTS TEMP; 
+ CREATE TEMPORARY TABLE TEMP(
+	   SELECT m.movie_id,
+           m.title,
+           g.genre_id,
+           COUNT(tc.transaction_content_id) AS copies_rented
+    FROM transaction_contents tc
+             JOIN transactions t ON t.transaction_id = tc.transaction_id
+             JOIN copies c ON c.copy_id = tc.copy_id
+             JOIN movies m ON m.movie_id = c.movie_id
+             JOIN genres g ON g.genre_id = m.genre_id
+    WHERE NOT is_return
+    GROUP BY m.movie_id
+    ORDER BY copies_rented DESC
+    );
+    DROP TABLE IF EXISTS genre1; 
+CREATE TEMPORARY TABLE genre1(
+	SELECT * FROM TEMP t1
+    WHERE t1.genre_id = 1
+    LIMIT 5
+    );
+    DROP TABLE IF EXISTS genre2; 
+    CREATE TEMPORARY TABLE genre2(
+	SELECT * FROM TEMP t1
+    WHERE t1.genre_id = 2
+    LIMIT 5
+    );
+    DROP TABLE IF EXISTS genre3; 
+    CREATE TEMPORARY TABLE genre3(
+	SELECT * FROM TEMP t1
+    WHERE t1.genre_id = 3
+    LIMIT 5
+    );
+    DROP TABLE IF EXISTS genre4; 
+CREATE TEMPORARY TABLE genre4(
+	SELECT * FROM TEMP t1
+    WHERE t1.genre_id = 4
+    LIMIT 5
+    );
+    DROP TABLE IF EXISTS genre5; 
+CREATE TEMPORARY TABLE genre5(
+	SELECT * FROM TEMP t1
+    WHERE t1.genre_id = 5
+    LIMIT 5
+    );
+DROP TABLE IF EXISTS genre6; 
+CREATE TEMPORARY TABLE genre6(
+	SELECT * FROM TEMP t1
+    WHERE t1.genre_id = 6
+    LIMIT 5
+    );
+SELECT * FROM genre1
+UNION
+SELECT * FROM genre2
+UNION 
+SELECT * FROM genre3
+UNION 
+SELECT * FROM genre4
+UNION
+SELECT * FROM genre5
+UNION
+SELECT * FROM genre6; 
+    END;
+    
